@@ -25,8 +25,6 @@ public class Persona  {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
-
     public String getApellido() {
         return apellido;
     }
@@ -44,19 +42,11 @@ public class Persona  {
         this.celular = celular;
     }
 
-
     public String getEmail() {
         return email;
     }
-
-
     public void setEmail(String email) {
         this.email = email;
     }
 
- 
-    
-
-
-    
 }
