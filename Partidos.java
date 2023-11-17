@@ -1,76 +1,104 @@
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class Partidos {
-    private String nombreEstadio;
-    private String ubicacion;
-    private LocalDate fechaEnfrentamiento;
-    private ArrayList<Equipos> equipos;
-    
-    public Partidos(String nombreEstadio, String ubicacion, LocalDate fechaEnfrentamiento, ArrayList<Equipos> equipos) {
-        this.nombreEstadio = nombreEstadio;
-        this.ubicacion = ubicacion;
-        this.fechaEnfrentamiento = fechaEnfrentamiento;
-        this.equipos = equipos;
+import javax.swing.JOptionPane;
+
+public class Simul {
+
+    private List<String> equipos;
+    private List<Integer> puntuaciones;
+
+    public Simul(List<String> equipos) {
+        this.equipos = new ArrayList<>(equipos);
+        this.puntuaciones = new ArrayList<>(Collections.nCopies(equipos.size(), 0));
     }
 
-    public String getNombreEstadio() {
-        return nombreEstadio;
+    public void simularTorneo() {
+        List<String> combinaciones = generarPartidos();
+        simularPartidos(combinaciones);
     }
 
-    public void setNombreEstadio(String nombreEstadio) {
-        this.nombreEstadio = nombreEstadio;
+    public void imprimirTablasFinales() { 
+        imprimirResultadosFinales();
     }
 
-    public String getUbicacion() {
-        return ubicacion;
+    public void campeon() { 
+        imprimirCampeonTorneo();
     }
 
-    public void setUbicacion(String ubicacion) {
-        this.ubicacion = ubicacion;
-    }
-
-    public LocalDate getFechaEnfrentamiento() {
-        return fechaEnfrentamiento;
-    }
-
-    public void setFechaEnfrentamiento(LocalDate fechaEnfrentamiento) {
-        this.fechaEnfrentamiento = fechaEnfrentamiento;
-    }
-
-    public ArrayList<Equipos> getEquipos() {
-        return equipos;
-    }
-
-    public void setEquipos(ArrayList<Equipos> equipos) {
-        this.equipos = equipos;
-    }
-
-    public static List<String> generarPartidos(List<String> equipos) {
+    private List<String> generarPartidos() {
         List<String> combinaciones = new ArrayList<>();
-        
+
         for (int i = 0; i < equipos.size() - 1; i++) {
             for (int j = i + 1; j < equipos.size(); j++) {
                 String equipoLocal = equipos.get(i);
                 String equipoVisitante = equipos.get(j);
-                Random ran1 = new Random(); 
-                Random ran2 = new Random(); 
-                int golesLocal = ran1.nextInt(5);
-                int golesVisitante = ran2.nextInt(5);
-                String combinacion = "Partido: " + equipoLocal + " " + golesLocal + " - " + golesVisitante + " " + equipoVisitante;
+                Random golesL = new Random();
+                Random golesV = new Random();
+                int golesLocal = golesL.nextInt(5);
+                int golesVisitante = golesV.nextInt(5);
+                int puntosLocal = obtenerPuntos(golesLocal, golesVisitante);
+                int puntosVisitante = obtenerPuntos(golesVisitante, golesLocal);
+
+                actualizarPuntuacion(equipoLocal, puntosLocal);
+                actualizarPuntuacion(equipoVisitante, puntosVisitante);
+
+                String combinacion = "Partido: " + equipoLocal + " " + golesLocal + " - " + golesVisitante + " " + equipoVisitante + "  ";
                 combinaciones.add(combinacion);
             }
         }
+
         return combinaciones;
     }
 
-    public static void simularPartidos(List<String> combinaciones) {
+    private void simularPartidos(List<String> combinaciones) {
+        String mensaje = "\nEncuentros:\n";
         for (String combinacion : combinaciones) {
-            System.out.println(combinacion);
+            mensaje += combinacion + "\n";
+        }
+        JOptionPane.showMessageDialog(null, mensaje);
+    }
+
+    private void actualizarPuntuacion(String equipo, int puntos) {
+        int indice = equipos.indexOf(equipo);
+        puntuaciones.set(indice, puntuaciones.get(indice) + puntos);
+    }
+
+    private int obtenerPuntos(int golesEquipo1, int golesEquipo2) {
+        if (golesEquipo1 > golesEquipo2) {
+            return 3;
+        } else if (golesEquipo1 < golesEquipo2) {
+            return 0;
+        } else {
+            return 1;
         }
     }
-}
 
+    private void imprimirResultadosFinales() {
+        // Ordenar los equipos y puntuaciones en orden descendente
+        ordenarListasEnOrdenDescendente();
+        String mensaje = "\nResultados Finales del Torneo\n";
+        for (int i = 0; i < equipos.size(); i++) {
+            mensaje += equipos.get(i) + ": " + puntuaciones.get(i) + " puntos\n";
+        }
+        JOptionPane.showMessageDialog(null, mensaje);
+    }
+
+    private void imprimirCampeonTorneo() {
+        ordenarListasEnOrdenDescendente();
+        String mensaje = "\n¡Campeón del Torneo\n";
+        int posicion = 0;
+        mensaje += equipos.get(posicion) + ": " + puntuaciones.get(posicion) + " puntos";
+        JOptionPane.showMessageDialog(null, mensaje);
+    }
+
+
+
+    private void ordenarListasEnOrdenDescendente() {
+        Collections.sort(equipos, (a, b) -> Integer.compare(puntuaciones.get(equipos.indexOf(b)), puntuaciones.get(equipos.indexOf(a))));
+        Collections.sort(puntuaciones, Collections.reverseOrder());
+    }
+}
 

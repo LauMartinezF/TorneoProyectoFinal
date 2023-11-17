@@ -1,10 +1,11 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
 public class Torneo {
+    
     private byte cantMaxEquipos;
     private String nombreTorneo;
     private byte limEdad;
@@ -12,7 +13,8 @@ public class Torneo {
     private LocalDate fechaCierreIns;
     private int valorInscripcion;
     private LocalDate fechaInicioTorneo;
-    private ArrayList<Equipos> participantes; 
+    private List<String> equipos;
+    
     
     public Torneo(byte cantMaxEquipos, String nombreTorneo, byte limEdad, LocalDate fechaInicioIns,
             LocalDate fechaCierreIns, int valorInscripcion, LocalDate fechaInicioTorneo) {
@@ -23,9 +25,9 @@ public class Torneo {
         this.fechaCierreIns = fechaCierreIns;
         this.valorInscripcion = valorInscripcion;
         this.fechaInicioTorneo = fechaInicioTorneo;
-        this.participantes = new ArrayList<>();
-
     }
+
+    
 
     //GETTERS
     public byte getCantMaxEquipos() {
@@ -57,6 +59,8 @@ public class Torneo {
     }
 
     //SETTERS
+    
+
     public void setCantMaxEquipos(byte cantMaxEquipos) {
         this.cantMaxEquipos = cantMaxEquipos;
     }
@@ -95,29 +99,29 @@ public class Torneo {
         fecha1 = JOptionPane.showInputDialog("Ingrese la fecha de inicio de las inscripciones (Formato: yyyy-MM-dd): ");
         DateTimeFormatter conversion = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         fechaInicioIns = LocalDate.parse(fecha1, conversion);
-    do {
-        fecha2 = JOptionPane.showInputDialog("Ingrese la fecha de cierre de las inscripciones (Formato: yyyy-MM-dd): ");
-        DateTimeFormatter conversion2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        fechaCierreIns = LocalDate.parse(fecha2, conversion2);
-        if(fechaCierreIns.isBefore(getFechaInicioIns()) && fechaCierreIns.isEqual(getFechaInicioIns())){
-            JOptionPane.showMessageDialog(null, "La fecha de cierre de inscripciones debe ser posterior a la fecha de inicio.");
-        } else {
-            setFechaCierreIns(fechaCierreIns);
-            break;
-        }
-    } while (true);
+        do {
+            fecha2 = JOptionPane.showInputDialog("Ingrese la fecha de cierre de las inscripciones (Formato: yyyy-MM-dd): ");
+            DateTimeFormatter conversion2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            fechaCierreIns = LocalDate.parse(fecha2, conversion2);
+            if (fechaCierreIns.isBefore(getFechaInicioIns()) || fechaCierreIns.isEqual(getFechaInicioIns()) ) {
+                JOptionPane.showMessageDialog(null, "La fecha de cierre de inscripciones debe ser posterior a la fecha de inicio.");
+            } else {
+                setFechaCierreIns(fechaCierreIns);
+                break;
+            }
+        } while (true);
         valorInscripcion = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el valor de la inscripcion: "));
-    do {
-        fecha3 = JOptionPane.showInputDialog("Ingrese la fecha de inicio del torneo (Formato: yyyy-MM-dd): ");
-        DateTimeFormatter conversion3 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        fechaInicioTorneo = LocalDate.parse(fecha3, conversion3);
-        if(fechaInicioTorneo.isBefore(getFechaInicioIns()) && fechaInicioTorneo.isBefore(getFechaCierreIns()) && fechaInicioTorneo.isEqual(getFechaInicioIns()) && fechaInicioTorneo.isEqual(getFechaCierreIns())){
-            JOptionPane.showMessageDialog(null, "La fecha de inicio de torneo debe ser posterior a las fechas de inicio y cierre de inscripciones");
-        } else {
-            setFechaCierreIns(fechaCierreIns);
-            break;
-        }
-    }while (true);
+        do {
+            fecha3 = JOptionPane.showInputDialog("Ingrese la fecha de inicio del torneo (Formato: yyyy-MM-dd): ");
+            DateTimeFormatter conversion3 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            fechaInicioTorneo = LocalDate.parse(fecha3, conversion3);
+            if(fechaInicioTorneo.isBefore(getFechaInicioIns()) || fechaInicioTorneo.isBefore(getFechaCierreIns()) || fechaInicioTorneo.isEqual(getFechaInicioIns()) || fechaInicioTorneo.isEqual(getFechaCierreIns())){
+                JOptionPane.showMessageDialog(null, "La fecha de inicio de torneo debe ser posterior a las fechas de inicio y cierre de inscripciones");
+            } else {
+                setFechaCierreIns(fechaCierreIns);
+                break;
+            }
+        }while (true);
 }
 
     public void cambiarAtributos(){
@@ -152,17 +156,17 @@ public class Torneo {
                 setFechaInicioIns(LocalDate.parse(fecha1, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                 break;
             case 5:
-            do {
-                String fecha2 = JOptionPane.showInputDialog("Ingrese la nueva fecha de cierre de inscripciones (Formato: yyyy-MM-dd): ");
-                setFechaCierreIns(LocalDate.parse(fecha2, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-                if(fechaCierreIns.isBefore(getFechaInicioIns()) && fechaCierreIns.isEqual(getFechaInicioIns())){
-                    JOptionPane.showMessageDialog(null, "La fecha de cierre de inscripciones debe ser posterior a la fecha de inicio.");
-                } else {
-                    setFechaCierreIns(fechaCierreIns);
-                    break;
-                }
-            }while (true);
-                break;    
+                do {
+                    String fecha2 = JOptionPane.showInputDialog("Ingrese la nueva fecha de cierre de inscripciones (Formato: yyyy-MM-dd): ");
+                    setFechaCierreIns(LocalDate.parse(fecha2, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                    if(fechaCierreIns.isBefore(getFechaInicioIns()) || fechaCierreIns.isEqual(getFechaInicioIns())){
+                        JOptionPane.showMessageDialog(null, "La fecha de cierre de inscripciones debe ser posterior a la fecha de inicio.");
+                    } else {
+                        setFechaCierreIns(fechaCierreIns);
+                        break;
+                    }
+                } while (true);
+                break;
             case 6:
                 setValorInscripcion(Integer.parseInt(JOptionPane.showInputDialog("Ingrese el valor actualizado de la inscripcion: ")));
                 break;
@@ -170,7 +174,7 @@ public class Torneo {
             do {
                 String fecha3 = JOptionPane.showInputDialog("Ingrese la nueva fecha de inicio de torneo (Formato: yyyy-MM-dd): ");
                 setFechaInicioTorneo(LocalDate.parse(fecha3, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-                if(fechaInicioTorneo.isBefore(getFechaInicioIns()) && fechaInicioTorneo.isBefore(getFechaCierreIns()) && fechaInicioTorneo.isEqual(getFechaInicioIns()) && fechaInicioTorneo.isEqual(getFechaCierreIns())){
+                if(fechaInicioTorneo.isBefore(getFechaInicioIns()) || fechaInicioTorneo.isBefore(getFechaCierreIns()) || fechaInicioTorneo.isEqual(getFechaInicioIns()) || fechaInicioTorneo.isEqual(getFechaCierreIns())){
                     JOptionPane.showMessageDialog(null, "La fecha de inicio de torneo debe ser posterior a las fechas de inicio y cierre de inscripciones");
                 } else {
                     setFechaInicioTorneo(fechaInicioTorneo);
@@ -198,6 +202,18 @@ public class Torneo {
             "Fecha inicio de torneo: " + fechaInicioTorneo+"\n"+"--------------------------"+"\n";
             String info = JOptionPane.showInputDialog(null, infoTorneo);
             return info;
+    }
+
+
+
+    public List<String> getEquipos() {
+        return equipos;
+    }
+
+
+
+    public void setEquipos(List<String> equipos) {
+        this.equipos = equipos;
     }
 
 }
