@@ -1,7 +1,13 @@
 package uniquindio.edu.co;
 
+/**
+ * Autores:Laura Milena Flores , Jacobo Luengas , Daniela Muñoz 
+ * Fecha:10/11/2023
+ */
+
 public class Persona  {
 
+    //Atributos de la clase 
     private String nombre;
     private String apellido;
     private String celular;

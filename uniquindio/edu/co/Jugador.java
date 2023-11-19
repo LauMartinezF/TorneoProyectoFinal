@@ -3,7 +3,7 @@ package uniquindio.edu.co;
 import java.time.LocalDate;
 
 /*
- * Autores:
+ * Autores:Laura Flores , Jacobo Luengas , Daniela Muñoz 
  * Fecha:
  * Licencia:
  * Esta clase Heredara de la clase persona algunos atributos y sera la encargada de validar la informacion 
