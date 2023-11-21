@@ -46,4 +46,9 @@ public class Jugador extends Persona {
         return mensaje;
     }
 
+
+    public boolean isPresent() {
+        return false;
+    }
+
 }
