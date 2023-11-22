@@ -115,19 +115,24 @@ public class Partidos {
     }
 
 
-    
-//Obtiene en que partido esta cada juez 
-    public List<Enfrentamiento> obtenerPartidosPorJuez(Juez juez) {
-        List<Enfrentamiento> partidosDelJuez = new ArrayList<>();
+// Método para obtener los partidos asociados a un juez
+public List<Enfrentamiento> obtenerPartidosPorJuez(Juez juez) {
+    List<Enfrentamiento> partidosDelJuez = new ArrayList<>();
 
-        for (Enfrentamiento enfrentamiento : enfrentamientos) {
-            if (enfrentamiento.getJueces().contains(juez)) {
-                partidosDelJuez.add(enfrentamiento);
-            }
+    for (Enfrentamiento enfrentamiento : enfrentamientos) {
+        if (enfrentamiento.getJueces().contains(juez)) {
+            partidosDelJuez.add(enfrentamiento);
         }
-
-        return partidosDelJuez;
     }
+
+    // Verificar si hay partidos asignados al juez
+    if (partidosDelJuez.isEmpty()) {
+        System.out.println("El juez " + juez.getNombre() + " aún no tiene asignados enfrentamientos.");
+    }
+
+    return partidosDelJuez;
+}
+
 }
     
 
