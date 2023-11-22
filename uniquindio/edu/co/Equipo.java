@@ -7,15 +7,19 @@ public class Equipo {
     private final String nombreEquipo;
     private final Persona representante;
     private ArrayList<Jugador> jugadores;
-    private ArrayList<Partidos> enfrentamientosEquipo;
+    private static ArrayList<Equipo> listaEquipos = new ArrayList<>();
+    private ArrayList <String> nombresEquipos = new ArrayList<>();
 
     public Equipo (String nombreEquipo, Persona representante){
+        
         this.nombreEquipo = nombreEquipo;
         this.representante = representante;
         this.jugadores = new ArrayList<>();
-        this.enfrentamientosEquipo = new ArrayList<>();
+
+        listaEquipos.add(this);
     }
 
+<<<<<<< HEAD
     public Equipo (String nombreEquipo){
         this.nombreEquipo = nombreEquipo;
         this.representante = null;
@@ -24,14 +28,28 @@ public class Equipo {
     }
     
 
+=======
+    // Método que toma una lista de equipos y devuelve una lista de nombres
+    public ArrayList<String> obtenerNombresEquipos(ArrayList<Equipo> listaEquipos) {
+        ArrayList<String> nombresEquipos = new ArrayList<>();
+
+        // Iteras sobre la lista de equipos
+        for (int i = 0; i < listaEquipos.size(); i++) {
+            Equipo equipo = listaEquipos.get(i);
+            nombresEquipos.add(equipo.getNombreEquipo());
+        }
+
+        return nombresEquipos;
+    }
+    
+>>>>>>> 8c9ed632bd29114360cbd7cefbdd48c0eba02d46
     public void registrarJugador(Jugador jugador){
         validarJugadorExistente(jugador);
         jugadores.add(jugador);
     }
 
     private void validarJugadorExistente(Jugador jugador) {
-        Jugador jugadorEncontrado = buscarJugador(jugador);
-        boolean existeJugador = jugadorEncontrado != null;
+        boolean existeJugador = buscarJugador(jugador).isPresent();
         assert !existeJugador : "El jugador ya esta registrado";
     }
 
@@ -45,6 +63,24 @@ public class Equipo {
         return null; // Retorna null si no se encuentra ningún jugador que coincida
     }
 
+    public ArrayList<String> getNombresEquipos() {
+        return nombresEquipos;
+    }
+
+    public void setNombresEquipos(ArrayList<String> nombresEquipos) {
+        this.nombresEquipos = nombresEquipos;
+    }
+
+    public static ArrayList<Equipo> getListaEquipos() {
+        return listaEquipos;
+    }
+
+
+    public static void setListaEquipos(ArrayList<Equipo> listaEquipos) {
+        Equipo.listaEquipos = listaEquipos;
+    }
+
+
     public String getNombreEquipo() {
         return nombreEquipo;
     }
@@ -57,10 +93,6 @@ public class Equipo {
         return jugadores;
     }
 
-    public ArrayList<Partidos> getEnfrentamientosEquipo() {
-        return enfrentamientosEquipo;
-    }
 
-    
 
 }
