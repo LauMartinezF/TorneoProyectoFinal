@@ -1,84 +1,71 @@
 package uniquindio.edu.co;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import javax.swing.JOptionPane;
 
 public class Partidos {
-
     private List<String> equipos;
     private List<Integer> puntuaciones;
+    private List<Enfrentamiento> enfrentamientos;
 
     public Partidos(List<String> equipos) {
-        this.equipos = new ArrayList<>(equipos);
-        this.puntuaciones = new ArrayList<>(Collections.nCopies(equipos.size(), 0));
+        this.equipos = equipos;
+        this.puntuaciones = new ArrayList<>();
+        this.enfrentamientos = new ArrayList<>();
+        generarPuntuacionesIniciales();
+    }
+
+    private void generarPuntuacionesIniciales() {
+        for (int i = 0; i < equipos.size(); i++) {
+            puntuaciones.add(0);
+        }
     }
 
     public void simularTorneo() {
-        List<String> combinaciones = generarPartidos();
-        simularPartidos(combinaciones);
-    }
-
-    public void imprimirTablasFinales() { 
+        simularPartidos();
         imprimirResultadosFinales();
-    }
-
-    public void campeon() { 
         imprimirCampeonTorneo();
+        imprimirInfoEnfrentamientos();
     }
 
-    private List<String> generarPartidos() {
-        List<String> combinaciones = new ArrayList<>();
-
+    private void simularPartidos() {
         for (int i = 0; i < equipos.size() - 1; i++) {
             for (int j = i + 1; j < equipos.size(); j++) {
-                String equipoLocal = equipos.get(i);
-                String equipoVisitante = equipos.get(j);
-                Random golesL = new Random();
-                Random golesV = new Random();
-                int golesLocal = golesL.nextInt(5);
-                int golesVisitante = golesV.nextInt(5);
-                int puntosLocal = obtenerPuntos(golesLocal, golesVisitante);
-                int puntosVisitante = obtenerPuntos(golesVisitante, golesLocal);
+                // Simulación de puntos y otros detalles
+                int puntosLocal = (int) (Math.random() * 5);
+                int puntosVisitante = (int) (Math.random() * 5);
 
-                actualizarPuntuacion(equipoLocal, puntosLocal);
-                actualizarPuntuacion(equipoVisitante, puntosVisitante);
+                // Información adicional
+                String estadio = "Estadio " + (i + j + 1);
+                LocalDate fecha = generarFechaAleatoria();
+                String juez = "Juez " + (i + j + 1);
 
-                String combinacion = "Partido: " + equipoLocal + " " + golesLocal + " - " + golesVisitante + " " + equipoVisitante + "  ";
-                combinaciones.add(combinacion);
+                puntuaciones.set(i, puntuaciones.get(i) + puntosLocal);
+                puntuaciones.set(j, puntuaciones.get(j) + puntosVisitante);
+
+                // Registro del enfrentamiento
+                Enfrentamiento enfrentamiento = new Enfrentamiento(equipos.get(i), equipos.get(j), puntosLocal,
+                        puntosVisitante, EstadoEnfrentamiento.FINALIZADO, estadio, fecha, juez);
+                enfrentamientos.add(enfrentamiento);
             }
         }
-
-        return combinaciones;
     }
 
-    private void simularPartidos(List<String> combinaciones) {
-        String mensaje = "\nEncuentros:\n";
-        for (String combinacion : combinaciones) {
-            mensaje += combinacion + "\n";
-        }
-        JOptionPane.showMessageDialog(null, mensaje);
+    private LocalDate generarFechaAleatoria() {
+        // Fecha fija
+        LocalDate fechaFija = LocalDate.parse("2023-11-11", DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+        // Agrega hasta 30 días aleatorios
+        int diasAleatorios = (int) (Math.random() * 45); // 30 días de rango original + 15 días adicionales
+        return fechaFija.plusDays(diasAleatorios);
     }
 
-    private void actualizarPuntuacion(String equipo, int puntos) {
-        int indice = equipos.indexOf(equipo);
-        puntuaciones.set(indice, puntuaciones.get(indice) + puntos);
-    }
-
-    private int obtenerPuntos(int golesEquipo1, int golesEquipo2) {
-        if (golesEquipo1 > golesEquipo2) {
-            return 3;
-        } else if (golesEquipo1 < golesEquipo2) {
-            return 0;
-        } else {
-            return 1;
-        }
-    }
-
-    private void imprimirResultadosFinales() {
-        // Ordenar los equipos y puntuaciones en orden descendente
+    public void imprimirResultadosFinales() {
         ordenarListasEnOrdenDescendente();
         String mensaje = "\nResultados Finales del Torneo\n";
         for (int i = 0; i < equipos.size(); i++) {
@@ -87,19 +74,61 @@ public class Partidos {
         JOptionPane.showMessageDialog(null, mensaje);
     }
 
-    private void imprimirCampeonTorneo() {
+    public void imprimirCampeonTorneo() {
         ordenarListasEnOrdenDescendente();
-        String mensaje = "\n¡Campeón del Torneo\n";
+        String mensaje = "\n¡Campeón del Torneo!\n";
         int posicion = 0;
         mensaje += equipos.get(posicion) + ": " + puntuaciones.get(posicion) + " puntos";
         JOptionPane.showMessageDialog(null, mensaje);
     }
 
-
+    private void imprimirInfoEnfrentamientos() {
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        StringBuilder infoEnfrentamientos = new StringBuilder("\nInformación de Enfrentamientos\n");
+        for (Enfrentamiento enfrentamiento : enfrentamientos) {
+            infoEnfrentamientos.append("Equipo Local: ").append(enfrentamiento.equipoLocal).append("\n");
+            infoEnfrentamientos.append("Equipo Visitante: ").append(enfrentamiento.equipoVisitante).append("\n");
+            infoEnfrentamientos.append("Puntos Local: ").append(enfrentamiento.puntosLocal).append("\n");
+            infoEnfrentamientos.append("Puntos Visitante: ").append(enfrentamiento.puntosVisitante).append("\n");
+            infoEnfrentamientos.append("Estado: ").append(enfrentamiento.estado).append("\n");
+            infoEnfrentamientos.append("Estadio: ").append(enfrentamiento.estadio).append("\n");
+    
+            // Formatear la fecha solo si es un objeto de tipo LocalDate
+            if (enfrentamiento.fecha instanceof LocalDate) {
+                infoEnfrentamientos.append("Fecha: ").append(dateFormat.format(enfrentamiento.fecha)).append("\n");
+            }
+    
+            infoEnfrentamientos.append("Juez: ").append(enfrentamiento.juez).append("\n\n");
+        }
+        JOptionPane.showMessageDialog(null, infoEnfrentamientos.toString());
+    }
 
     private void ordenarListasEnOrdenDescendente() {
-        Collections.sort(equipos, (a, b) -> Integer.compare(puntuaciones.get(equipos.indexOf(b)), puntuaciones.get(equipos.indexOf(a))));
+        Collections.sort(equipos, (a, b) -> Integer.compare(puntuaciones.get(equipos.indexOf(b)),
+                puntuaciones.get(equipos.indexOf(a))));
         Collections.sort(puntuaciones, Collections.reverseOrder());
     }
-}
 
+    private static class Enfrentamiento {
+        private String equipoLocal;
+        private String equipoVisitante;
+        private int puntosLocal;
+        private int puntosVisitante;
+        private EstadoEnfrentamiento estado;
+        private String estadio;
+        private LocalDate fecha;
+        private String juez;
+
+        public Enfrentamiento(String equipoLocal, String equipoVisitante, int puntosLocal, int puntosVisitante,
+                EstadoEnfrentamiento estado, String estadio, LocalDate fecha2, String juez) {
+            this.equipoLocal = equipoLocal;
+            this.equipoVisitante = equipoVisitante;
+            this.puntosLocal = puntosLocal;
+            this.puntosVisitante = puntosVisitante;
+            this.estado = estado;
+            this.estadio = estadio;
+            this.fecha = fecha2;
+            this.juez = juez;
+        }
+    }
+}

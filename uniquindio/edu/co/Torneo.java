@@ -16,16 +16,7 @@ public class Torneo {
     private LocalDate fechaInicioTorneo;
     private List<String> equipos;
     
-    /**
-     * Constructor del torneo
-     * @param cantMaxEquipos
-     * @param nombreTorneo
-     * @param limEdad
-     * @param fechaInicioIns
-     * @param fechaCierreIns
-     * @param valorInscripcion
-     * @param fechaInicioTorneo
-     */
+    
     public Torneo(byte cantMaxEquipos, String nombreTorneo, byte limEdad, LocalDate fechaInicioIns,
             LocalDate fechaCierreIns, int valorInscripcion, LocalDate fechaInicioTorneo) {
         this.cantMaxEquipos = cantMaxEquipos;
@@ -99,27 +90,16 @@ public class Torneo {
         this.fechaInicioTorneo = fechaInicioTorneo;
     }
 
-    /**
-    * Método para ingresar datos del torneo a través de diálogos de entrada.
-    * Recopila información como el número máximo de equipos, nombre del torneo, límite de edad,
-    * fechas de inicio y cierre de inscripciones, valor de inscripción y fecha de inicio del torneo.
-    */
     public void ingresarDatosTorneo(){
         String fecha1;
         String fecha2;
         String fecha3;
-
-        // Solicitar información del torneo
         cantMaxEquipos = Byte.parseByte(JOptionPane.showInputDialog("Ingrese el numero maximo de equipos: "));
         nombreTorneo = JOptionPane.showInputDialog("Ingrese el nombre del torneo: ");
         limEdad = Byte.parseByte(JOptionPane.showInputDialog("Ingrese el limite de edad para el torneo: "));
-        
-        // Ingresar la fecha de inicio de las inscripciones
         fecha1 = JOptionPane.showInputDialog("Ingrese la fecha de inicio de las inscripciones (Formato: yyyy-MM-dd): ");
         DateTimeFormatter conversion = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         fechaInicioIns = LocalDate.parse(fecha1, conversion);
-
-        // Validar y obtener la fecha de cierre de las inscripciones
         do {
             fecha2 = JOptionPane.showInputDialog("Ingrese la fecha de cierre de las inscripciones (Formato: yyyy-MM-dd): ");
             DateTimeFormatter conversion2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -131,11 +111,7 @@ public class Torneo {
                 break;
             }
         } while (true);
-
-        // Ingresar el valor de la inscripción
         valorInscripcion = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el valor de la inscripcion: "));
-        
-        // Validar y obtener la fecha de inicio del torneo
         do {
             fecha3 = JOptionPane.showInputDialog("Ingrese la fecha de inicio del torneo (Formato: yyyy-MM-dd): ");
             DateTimeFormatter conversion3 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -149,12 +125,6 @@ public class Torneo {
         }while (true);
 }
 
-    /**
-    * Permite cambiar los atributos de un torneo a través de un menú interactivo.
-    * Los atributos modificables incluyen la cantidad de equipos, nombre del torneo,
-    * límite de edad, fechas de inicio y cierre de inscripciones, valor de la inscripción
-    * y fecha de inicio del torneo.
-    */
     public void cambiarAtributos(){
         int opcion;
         do{
@@ -240,6 +210,8 @@ public class Torneo {
     public List<String> getEquipos() {
         return equipos;
     }
+
+
 
     public void setEquipos(List<String> equipos) {
         this.equipos = equipos;
