@@ -18,13 +18,13 @@ public class EquipoTest {
 
     /**
      * @author: Laura Florez, Jacobo Luengas , Daniela Muñoz 
-     * Se hace la prueba para probar el metodo registrar Jugador 
+     * Se hace la prueba para probar el metodo registrar Jugador de la clase Equipo
      * 
      */
 
 
     @Test
-    public void registrarEquipo(){
+    public void registrarEquipoTest(){
         LOG.info("Inicio de prueba para registrar equipo: ");
         //Se almacenan los datos de prueba 
         Persona representante=new Persona("Maicol", "Buitrago", "3215873454", "maicolBuitrago@gmail.com");
@@ -33,19 +33,20 @@ public class EquipoTest {
 
         equipo.registrarJugador(jugador);
 
-        //Verificacion de datos 
+        //Verificacion de datos , si la iformacion no esta correcta sale una excepcion 
         assertTrue(equipo.getJugadores().contains(jugador));
         assertEquals(1, equipo.getJugadores().size());
-        LOG.info("Fin de prueba jugador registrado con exito");
+        LOG.info("Fin de prueba el jugador "+jugador.getNombre()+" "+jugador.getApellido()+ " ha sido registrado con exito");
 
-
-
-
-
-      
     }
 
 
+   
+
+        
+
 }
+
+
     
     

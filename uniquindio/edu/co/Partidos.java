@@ -1,139 +1,139 @@
 package uniquindio.edu.co;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-
 
 import javax.swing.JOptionPane;
 
 public class Partidos {
-
+    private List<String> equipos;
+    private List<Integer> puntuaciones;
     private List<Enfrentamiento> enfrentamientos;
-    private TablaPosiciones tablaPosiciones;
 
     public Partidos(List<String> equipos) {
+        this.equipos = equipos;
+        this.puntuaciones = new ArrayList<>();
         this.enfrentamientos = new ArrayList<>();
-        this.tablaPosiciones = new TablaPosiciones(equipos);
-        generarPartidos(equipos);
+        generarPuntuacionesIniciales();
+    }
+
+    private void generarPuntuacionesIniciales() {
+        for (int i = 0; i < equipos.size(); i++) {
+            puntuaciones.add(0);
+        }
     }
 
     public void simularTorneo() {
         simularPartidos();
-        actualizarTablaPosiciones();
-    }
-
-    public void imprimirTablasFinales() {
         imprimirResultadosFinales();
-        imprimirTablaPosiciones();
-    }
-
-    public void campeon() {
         imprimirCampeonTorneo();
+        imprimirInfoEnfrentamientos();
     }
 
-    private void generarPartidos(List<String> equipos) {
+  public void simularPartidos() {
         for (int i = 0; i < equipos.size() - 1; i++) {
             for (int j = i + 1; j < equipos.size(); j++) {
-                String equipoLocal = equipos.get(i);
-                String equipoVisitante = equipos.get(j);
-                Enfrentamiento enfrentamiento = new Enfrentamiento(equipoLocal, equipoVisitante);
+                // Simulación de puntos y otros detalles
+                int puntosLocal = (int) (Math.random() * 5);
+                int puntosVisitante = (int) (Math.random() * 5);
+
+                // Información adicional
+                String estadio = "Estadio " + (i + j + 1);
+                LocalDate fecha = generarFechaAleatoria();
+                String juez = "Juez " + (i + j + 1);
+
+                puntuaciones.set(i, puntuaciones.get(i) + puntosLocal);
+                puntuaciones.set(j, puntuaciones.get(j) + puntosVisitante);
+
+                // Registro del enfrentamiento
+                Enfrentamiento enfrentamiento = new Enfrentamiento(equipos.get(i), equipos.get(j), puntosLocal,
+                        puntosVisitante, EstadoEnfrentamiento.FINALIZADO, estadio, fecha, juez);
                 enfrentamientos.add(enfrentamiento);
             }
         }
     }
 
-    private void simularPartidos() {
-        String mensaje = "\nEncuentros:\n";
-        for (Enfrentamiento enfrentamiento : enfrentamientos) {
-            mensaje += enfrentamiento.toString() + "\n";
-            enfrentamiento.simular();
-            
-            // Imprime el resultado del enfrentamiento para verificar
-            System.out.println(enfrentamiento.getResultado());
+  public LocalDate generarFechaAleatoria() {
+        // Fecha fija
+        LocalDate fechaFija = LocalDate.parse("2023-11-11", DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-            // Añade una línea en blanco para separar los resultados
-            System.out.println();
-        }
-        JOptionPane.showMessageDialog(null, mensaje);
+        // Agrega hasta 30 días aleatorios
+        int diasAleatorios = (int) (Math.random() * 45); // 30 días de rango original + 15 días adicionales
+        return fechaFija.plusDays(diasAleatorios);
     }
 
-
-    private void actualizarTablaPosiciones() {
-        for (Enfrentamiento enfrentamiento : enfrentamientos) {
-            String equipoLocal = enfrentamiento.getEquipoLocal();
-            String equipoVisitante = enfrentamiento.getEquipoVisitante();
-            int puntosLocal = enfrentamiento.getPuntosLocal();
-            int puntosVisitante = enfrentamiento.getPuntosVisitante();
-    
-            // Llamada al método con los argumentos correctos
-            tablaPosiciones.actualizarPuntuacion(equipoLocal, puntosLocal);
-            tablaPosiciones.actualizarPuntuacion(equipoVisitante, puntosVisitante);
-        }
-    }
-
-    
-
-    private void imprimirResultadosFinales() {
-        // Mostrar puntos antes de la ordenación
-        JOptionPane.showMessageDialog(null, "Puntos antes de la ordenación: " + enfrentamientos);
-    
-        // Ordenar los enfrentamientos por puntos finales de manera descendente usando un Comparator
-        Collections.sort(enfrentamientos, Comparator.comparingInt(Enfrentamiento::calcularPuntosFinales).reversed());
-    
-        // Mostrar puntos después de la ordenación
-        JOptionPane.showMessageDialog(null, "Puntos después de la ordenación: " + enfrentamientos);
-    
-        // Crear el mensaje con los resultados finales
+    public void imprimirResultadosFinales() {
+        ordenarListasEnOrdenDescendente();
         String mensaje = "\nResultados Finales del Torneo\n";
-        for (Enfrentamiento enfrentamiento : enfrentamientos) {
-            mensaje += enfrentamiento.getResultado() + "\n";
+        for (int i = 0; i < equipos.size(); i++) {
+            mensaje += equipos.get(i) + ": " + puntuaciones.get(i) + " puntos\n";
         }
-    
-        // Mostrar el mensaje en un cuadro de diálogo
         JOptionPane.showMessageDialog(null, mensaje);
     }
 
-    private void imprimirTablaPosiciones() {
-        String mensaje = "\nTabla de Posiciones\n";
-        mensaje += tablaPosiciones.toString();
-        JOptionPane.showMessageDialog(null, mensaje);
-    }
-
-    private void imprimirCampeonTorneo() {
-        // Ordenar los enfrentamientos por fecha y hora
-        Collections.sort(enfrentamientos, (a, b) -> a.getFechaHora().compareTo(b.getFechaHora()));
-
+    public void imprimirCampeonTorneo() {
+        ordenarListasEnOrdenDescendente();
         String mensaje = "\n¡Campeón del Torneo!\n";
-        Enfrentamiento campeon = enfrentamientos.get(0);
-        mensaje += campeon.getResultado();
+        int posicion = 0;
+        mensaje += equipos.get(posicion) + ": " + puntuaciones.get(posicion) + " puntos";
         JOptionPane.showMessageDialog(null, mensaje);
     }
 
-    public Equipo getEquipo1() {
-        return null;
-    }
-
-
-// Método para obtener los partidos asociados a un juez
-public List<Enfrentamiento> obtenerPartidosPorJuez(Juez juez) {
-    List<Enfrentamiento> partidosDelJuez = new ArrayList<>();
-
-    for (Enfrentamiento enfrentamiento : enfrentamientos) {
-        if (enfrentamiento.getJueces().contains(juez)) {
-            partidosDelJuez.add(enfrentamiento);
+    public List<Enfrentamiento> imprimirInfoEnfrentamientos() {
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        StringBuilder infoEnfrentamientos = new StringBuilder("\nInformación de Enfrentamientos\n");
+        for (Enfrentamiento enfrentamiento : enfrentamientos) {
+            infoEnfrentamientos.append("Equipo Local: ").append(enfrentamiento.equipoLocal).append("\n");
+            infoEnfrentamientos.append("Equipo Visitante: ").append(enfrentamiento.equipoVisitante).append("\n");
+ 
+            infoEnfrentamientos.append("Estado: ").append(enfrentamiento.estado).append("\n");
+            infoEnfrentamientos.append("Estadio: ").append(enfrentamiento.estadio).append("\n");
+    
+            // Formatear la fecha solo si es un objeto de tipo LocalDate
+            if (enfrentamiento.fecha instanceof LocalDate) {
+                infoEnfrentamientos.append("Fecha: ").append(dateFormat.format(enfrentamiento.fecha)).append("\n");
+            }
+    
+            infoEnfrentamientos.append("Juez: ").append(enfrentamiento.juez).append("\n\n");
         }
+        JOptionPane.showMessageDialog(null, infoEnfrentamientos.toString());
     }
 
-    // Verificar si hay partidos asignados al juez
-    if (partidosDelJuez.isEmpty()) {
-        System.out.println("El juez " + juez.getNombre() + " aún no tiene asignados enfrentamientos.");
+    public void ordenarListasEnOrdenDescendente() {
+        Collections.sort(equipos, (a, b) -> Integer.compare(puntuaciones.get(equipos.indexOf(b)),
+                puntuaciones.get(equipos.indexOf(a))));
+        Collections.sort(puntuaciones, Collections.reverseOrder());
     }
 
-    return partidosDelJuez;
-}
+   public static class Enfrentamiento {
+        String equipoLocal;
+        String equipoVisitante;
+        private int puntosLocal;
+        private int puntosVisitante;
+        private EstadoEnfrentamiento estado;
+        String estadio;
+        LocalDate fecha;
+        String juez;
 
-}
-    
+        public Enfrentamiento(String equipoLocal, String equipoVisitante, int puntosLocal, int puntosVisitante,
+                EstadoEnfrentamiento estado, String estadio, LocalDate fecha2, String juez) {
+            this.equipoLocal = equipoLocal;
+            this.equipoVisitante = equipoVisitante;
+            this.puntosLocal = puntosLocal;
+            this.puntosVisitante = puntosVisitante;
+            this.estado = estado;
+            this.estadio = estadio;
+            this.fecha = fecha2;
+            this.juez = juez;
+        }
 
-    
+        
+    }
+
+    public List<Enfrentamiento> getEnfrentamientos() {
+            return this.enfrentamientos;
+        }
+}
