@@ -83,14 +83,14 @@ public class Menu {
                     JOptionPane.showMessageDialog(null, "No hay torneos para simular");
                     break;
                 }
-                simulador.imprimirTablasFinales();
+                simulador.imprimirResultadosFinales();
                 break;
             case 6:
                 if (listaTorneos.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "No hay torneos para simular");
                     break;
                 }
-                simulador.campeon();
+                simulador.imprimirCampeonTorneo();
             case 7:
                 System.out.println("Vuelva pronto!");
             default:
