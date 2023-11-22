@@ -114,5 +114,21 @@ public class Partidos {
         return null;
     }
 
+
     
+//Obtiene en que partido esta cada juez 
+    public List<Enfrentamiento> obtenerPartidosPorJuez(Juez juez) {
+        List<Enfrentamiento> partidosDelJuez = new ArrayList<>();
+
+        for (Enfrentamiento enfrentamiento : enfrentamientos) {
+            if (enfrentamiento.getJueces().contains(juez)) {
+                partidosDelJuez.add(enfrentamiento);
+            }
+        }
+
+        return partidosDelJuez;
+    }
 }
+    
+
+    

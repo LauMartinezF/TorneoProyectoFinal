@@ -1,7 +1,10 @@
 package uniquindio.edu.co;
 
+import java.awt.Component;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 class Enfrentamiento {
@@ -12,11 +15,13 @@ class Enfrentamiento {
     private int golesVisitante;
     private LocalDateTime fechaHora;
     private EstadoEnfrentamiento estado;
+    private List<Juez> jueces;
 
     public Enfrentamiento(String equipoLocal, String equipoVisitante) {
         this.equipoLocal = equipoLocal;
         this.equipoVisitante = equipoVisitante;
         this.fechaHora = LocalDateTime.now(); // Simulación de fechas para los partidos
+        this.jueces=new ArrayList<>();
         this.estado = EstadoEnfrentamiento.PENDIENTE;
         
     }
@@ -96,5 +101,10 @@ class Enfrentamiento {
     @Override
     public String toString() {
         return "Partido entre " + equipoLocal + " y " + equipoVisitante + " - Fecha y Hora: " +  obtenerFecha();
+    }
+
+
+    public List<Juez> getJueces() {
+        return jueces;
     }
 }
