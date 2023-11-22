@@ -1,3 +1,4 @@
+package uniquindio.edu.co;
 
 public enum EstadoEnfrentamiento {
     PENDIENTE,

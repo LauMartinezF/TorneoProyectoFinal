@@ -1,6 +1,7 @@
 package uniquindio.edu.co;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 /*
  * Autores:Laura Flores , Jacobo Luengas , Daniela Muñoz 
@@ -51,6 +52,11 @@ public class Jugador extends Persona {
         boolean esValido = generoTorneo.equalsIgnoreCase(genero);
         String mensaje = "El género es " + (esValido ? "válido" : "inválido") + " para participar en este tipo de torneo.";
         return mensaje;
+    }
+
+
+    public boolean isPresent() {
+        return false;
     }
 
 }
