@@ -1,6 +1,7 @@
 package uniquindio.edu.co;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 /*
  * Autores:Laura Flores , Jacobo Luengas , Daniela Muñoz 
