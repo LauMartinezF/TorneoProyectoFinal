@@ -82,13 +82,14 @@ public class Partidos {
         JOptionPane.showMessageDialog(null, mensaje);
     }
 
-    public List<Enfrentamiento> imprimirInfoEnfrentamientos() {
+    private void imprimirInfoEnfrentamientos() {
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         StringBuilder infoEnfrentamientos = new StringBuilder("\nInformación de Enfrentamientos\n");
         for (Enfrentamiento enfrentamiento : enfrentamientos) {
             infoEnfrentamientos.append("Equipo Local: ").append(enfrentamiento.equipoLocal).append("\n");
             infoEnfrentamientos.append("Equipo Visitante: ").append(enfrentamiento.equipoVisitante).append("\n");
- 
+            infoEnfrentamientos.append("Puntos Local: ").append(enfrentamiento.puntosLocal).append("\n");
+            infoEnfrentamientos.append("Puntos Visitante: ").append(enfrentamiento.puntosVisitante).append("\n");
             infoEnfrentamientos.append("Estado: ").append(enfrentamiento.estado).append("\n");
             infoEnfrentamientos.append("Estadio: ").append(enfrentamiento.estadio).append("\n");
     
@@ -101,6 +102,7 @@ public class Partidos {
         }
         JOptionPane.showMessageDialog(null, infoEnfrentamientos.toString());
     }
+
 
     public void ordenarListasEnOrdenDescendente() {
         Collections.sort(equipos, (a, b) -> Integer.compare(puntuaciones.get(equipos.indexOf(b)),
