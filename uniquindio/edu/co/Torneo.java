@@ -15,10 +15,12 @@ public class Torneo {
     private int valorInscripcion;
     private LocalDate fechaInicioTorneo;
     private List<String> equipos;
+    private TipoTorneo tipoTorneo;
+    
     
     
     public Torneo(byte cantMaxEquipos, String nombreTorneo, byte limEdad, LocalDate fechaInicioIns,
-            LocalDate fechaCierreIns, int valorInscripcion, LocalDate fechaInicioTorneo) {
+            LocalDate fechaCierreIns, int valorInscripcion, LocalDate fechaInicioTorneo, TipoTorneo tipoTorneo) {
         this.cantMaxEquipos = cantMaxEquipos;
         this.nombreTorneo = nombreTorneo;
         this.limEdad = limEdad;
@@ -26,6 +28,7 @@ public class Torneo {
         this.fechaCierreIns = fechaCierreIns;
         this.valorInscripcion = valorInscripcion;
         this.fechaInicioTorneo = fechaInicioTorneo;
+        this.tipoTorneo = tipoTorneo;
     }
 
     
@@ -94,6 +97,10 @@ public class Torneo {
         String fecha1;
         String fecha2;
         String fecha3;
+        String[] tiposTorneo = {TipoTorneo.LOCAL.name(), TipoTorneo.REGIONAL.name(), TipoTorneo.NACIONAL.name(), TipoTorneo.MUNDIAL.name()};
+        String tipoSeleccionado = (String) JOptionPane.showInputDialog(null, "Seleccione el tipo de torneo:", "Tipo de Torneo",
+                JOptionPane.QUESTION_MESSAGE, null, tiposTorneo, tiposTorneo[0]);
+        tipoTorneo = TipoTorneo.valueOf(tipoSeleccionado);
         cantMaxEquipos = Byte.parseByte(JOptionPane.showInputDialog("Ingrese el numero maximo de equipos: "));
         nombreTorneo = JOptionPane.showInputDialog("Ingrese el nombre del torneo: ");
         limEdad = Byte.parseByte(JOptionPane.showInputDialog("Ingrese el limite de edad para el torneo: "));
@@ -191,20 +198,16 @@ public class Torneo {
     }
 
     public String toString() {
-            String infoTorneo;
-            infoTorneo = 
-            "\n"+"-----------------------"+"\n"+
-            "Cantidad maxima de equipos: " + cantMaxEquipos +
-            "\n"+"Nombre del torneo: " + nombreTorneo + "\n"+
-            "Limite de edad: " + limEdad + "\n"+
-            "Fecha inicio de inscripciones: " + fechaInicioIns +"\n"+
-            "Fecha cierre de inscripciones: " + fechaCierreIns +"\n"+
-            "Valor de inscripcion: " + valorInscripcion +"\n"+
-            "Fecha inicio de torneo: " + fechaInicioTorneo+"\n"+"--------------------------"+"\n";
-            String info = JOptionPane.showInputDialog(null, infoTorneo);
-            return info;
+        String infoTorneo;
+        infoTorneo = "\n" + "-----------------------" + "\n" + "Cantidad maxima de equipos: " + cantMaxEquipos + "\n"
+                + "Nombre del torneo: " + nombreTorneo + "\n" + "Limite de edad: " + limEdad + "\n"
+                + "Fecha inicio de inscripciones: " + fechaInicioIns + "\n" + "Fecha cierre de inscripciones: "
+                + fechaCierreIns + "\n" + "Valor de inscripcion: " + valorInscripcion + "\n"
+                + "Fecha inicio de torneo: " + fechaInicioTorneo + "\n" + "Tipo de Torneo: " + tipoTorneo + "\n"
+                + "--------------------------" + "\n";
+        String info = JOptionPane.showInputDialog(null, infoTorneo);
+        return info;
     }
-
 
 
     public List<String> getEquipos() {
