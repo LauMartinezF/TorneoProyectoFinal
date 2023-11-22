@@ -23,20 +23,7 @@ public class Equipo {
         this.enfrentamientosEquipo = new ArrayList<>();
     }
     
-    //metodo para registrar en una lista todos los enfrentamientos de un equipo, 
-    //primero verifica mediante un foreach si el equipo esta en cada uno de los enfrentamientos de la lista
-    //si el equipo esta en el enfrentamiento, ya sea en el equipo 1 o en el equipo 2,
-    //se añadira a la lista de enfrentamientos de dicho equipo 
-    public void enfrentamientosPorEquipo(ArrayList<Partidos> enfrentamientos) {
-        for (int i = 0; i < enfrentamientos.size(); i++) {
-           Partidos enfrentamiento = enfrentamientos.get(i);
-            if (enfrentamiento.getEquipo1().getNombreEquipo().equals(this.nombreEquipo) ||
-             enfrentamiento.getEquipo1().getNombreEquipo().equals(this.nombreEquipo)) {
-                this.enfrentamientosEquipo.add(enfrentamiento);
-            }
-        }
-    }
-    
+
     public void registrarJugador(Jugador jugador){
         validarJugadorExistente(jugador);
         jugadores.add(jugador);
