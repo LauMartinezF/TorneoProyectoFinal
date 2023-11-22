@@ -1,30 +1,32 @@
 package uniquindio.edu.co;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-
-import java.util.Arrays;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
 
 import org.junit.jupiter.api.Test;
 
-public class TestJueces {
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.util.Arrays;
+import java.util.logging.Logger;
+
+
+public class TestJueces {
     /**
      * Instancia para el manejo de logs
      */
-    private static final Logger LOG = Logger.getLogger(EquipoTest.class.getName());
-    
-    /*
-     * Clase para probar el funcionamiento del metodo para determinar a cada juez en que partido le corresponde estar 
-     */
+    private static final Logger LOG = Logger.getLogger(TesteEnfrentamientosEquipos.class.getName());
 
+    // Se hace la prueba para verificar que a cada equipo se le asigna a un contrincante
 
-      @Test
-    public void obtenerPartidosPorJuezTest() {
-
-        LOG.info("Inicio de prueba para saber que partido le corresponde estar a cada juez ");
+    @Test
+    public void simularPartidosTest() {
+        LOG.info("Inicio de prueba para asignacion de jueces por partido ");
 
         // Lista de equipos
         List<String> equipos = Arrays.asList("Tigres Negros", "Verdolaga", "Los canicas", "Milers");
@@ -32,21 +34,47 @@ public class TestJueces {
         // Crear instancia de la clase Partidos
         Partidos partidos = new Partidos(equipos);
 
-        // Crear instancia de un Juez
-        Juez juez = new Juez("Jorge", "Cuellar", "3002526789", "jorgeCuellar234@gmail.com", "src141");
+        // Ejecutar el método para simular los enfrentamientos
+        partidos.simularPartidos();
 
-        // Llamar al método obtenerPartidosPorJuez
-        List<Enfrentamiento> partidosDelJuez = partidos.obtenerPartidosPorJuez(juez);
+        // Obtener los enfrentamientos utilizando el método de la clase Partidos
+        List<Partidos.Enfrentamiento> enfrentamientos = partidos.getEnfrentamientos();
 
-        // Verificar que la lista no sea nula y realizar cualquier otra verificación necesaria
-        assertNotNull(partidosDelJuez);
+        // Mostrar los enfrentamientos en un cuadro de diálogo utilizando JOptionPane
+        mostrarEnfrentamientos(enfrentamientos);
 
-        // Imprimir información sobre los enfrentamientos asociados al juez
-        for (Enfrentamiento enfrentamiento : partidosDelJuez) {
-            LOG.info("El juez " + juez.getNombre() + " está asignado al enfrentamiento: " + enfrentamiento.toString());
-        }
+        // Verificar que los enfrentamientos no sean nulos
+        assertNotNull(enfrentamientos);
 
         LOG.info("Fin de prueba ");
-      
+    }
+
+    private void mostrarEnfrentamientos(List<Partidos.Enfrentamiento> enfrentamientos) {
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        StringBuilder infoEnfrentamientos = new StringBuilder("\nInformación de Enfrentamientos\n");
+        for (Partidos.Enfrentamiento enfrentamiento : enfrentamientos) {
+            infoEnfrentamientos.append("Equipo Local: ").append(enfrentamiento.equipoLocal).append("\n");
+            infoEnfrentamientos.append("Equipo Visitante: ").append(enfrentamiento.equipoVisitante).append("\n");
+            infoEnfrentamientos.append("Estadio: ").append(enfrentamiento.estadio).append("\n");
+
+            // Formatear la fecha solo si es un objeto de tipo LocalDate
+            if (enfrentamiento.fecha instanceof LocalDate) {
+                infoEnfrentamientos.append("Fecha: ").append(dateFormat.format(enfrentamiento.fecha)).append("\n");
+            }
+    
+            infoEnfrentamientos.append("Juez: ").append(enfrentamiento.juez).append("\n\n");
+
+            // Formatear la fecha solo si es un objeto de tipo LocalDate
+            if (enfrentamiento.fecha instanceof LocalDate) {
+                infoEnfrentamientos.append("Fecha: ").append(dateFormat.format(enfrentamiento.fecha)).append("\n");
+            }
+    
+            infoEnfrentamientos.append("Juez: ").append(enfrentamiento.juez).append("\n\n");
+        }
+        JOptionPane.showMessageDialog(null, infoEnfrentamientos.toString());
     }
 }
+
+ 
+    
+    
