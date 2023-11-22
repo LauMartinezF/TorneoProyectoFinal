@@ -9,16 +9,19 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 public class Partidos {
+    private List<Juez> listaJueces;
     private List<String> equipos;
     private List<Integer> puntuaciones;
     private List<Enfrentamiento> enfrentamientos;
 
-    public Partidos(List<String> equipos) {
+    public Partidos(List<String> equipos, List<Juez> listaJueces) {
         this.equipos = equipos;
         this.puntuaciones = new ArrayList<>();
         this.enfrentamientos = new ArrayList<>();
+        this.listaJueces = listaJueces;  
         generarPuntuacionesIniciales();
     }
+
 
     private void generarPuntuacionesIniciales() {
         for (int i = 0; i < equipos.size(); i++) {
@@ -33,6 +36,7 @@ public class Partidos {
         imprimirInfoEnfrentamientos();
     }
 
+
     private void simularPartidos() {
         for (int i = 0; i < equipos.size() - 1; i++) {
             for (int j = i + 1; j < equipos.size(); j++) {
@@ -43,17 +47,33 @@ public class Partidos {
                 // Información adicional
                 String estadio = "Estadio " + (i + j + 1);
                 LocalDate fecha = generarFechaAleatoria();
-                String juez = "Juez " + (i + j + 1);
 
                 puntuaciones.set(i, puntuaciones.get(i) + puntosLocal);
                 puntuaciones.set(j, puntuaciones.get(j) + puntosVisitante);
+                List<Juez> listaJueces = new ArrayList<>();
+                Juez juez1 = new Juez("Jose", "Martinez", "3156980934", "jose.arbrito.com", "Licencia Estandar");
+                Juez juez2 = new Juez("Edwin", "Lopez", "3105969433", "edwin.arbrito.com", "Licencia Estandar");
+                Juez juez3 = new Juez("Pedro","Pascal","3114598031","pedro.arbitro.com","Licencia Estandar");
+                listaJueces.add(juez1);
+                listaJueces.add(juez2);
+                listaJueces.add(juez3);
 
                 // Registro del enfrentamiento
                 Enfrentamiento enfrentamiento = new Enfrentamiento(equipos.get(i), equipos.get(j), puntosLocal,
-                        puntosVisitante, EstadoEnfrentamiento.FINALIZADO, estadio, fecha, juez);
+                        puntosVisitante, EstadoEnfrentamiento.FINALIZADO, estadio, fecha, obtenerInfoJuezAleatorio());
                 enfrentamientos.add(enfrentamiento);
             }
         }
+    }
+
+    private Juez obtenerJuezAleatorio() {
+        int indiceJuezAleatorio = (int) (Math.random() * listaJueces.size());
+        return listaJueces.get(indiceJuezAleatorio);
+    }
+    
+    private String obtenerInfoJuezAleatorio() {
+        Juez juezAleatorio = obtenerJuezAleatorio();
+        return "Nombre: " + juezAleatorio.getNombre() + "\nApellido: " + juezAleatorio.getApellido() + "\nCelular: " + juezAleatorio.getCelular() + "\nEmail: " + juezAleatorio.getEmail() + "\nLicencia: " + juezAleatorio.getLicencia();
     }
 
     private LocalDate generarFechaAleatoria() {
@@ -120,7 +140,7 @@ public class Partidos {
         private String juez;
 
         public Enfrentamiento(String equipoLocal, String equipoVisitante, int puntosLocal, int puntosVisitante,
-                EstadoEnfrentamiento estado, String estadio, LocalDate fecha2, String juez) {
+                EstadoEnfrentamiento estado, String estadio, LocalDate fecha2, String string) {
             this.equipoLocal = equipoLocal;
             this.equipoVisitante = equipoVisitante;
             this.puntosLocal = puntosLocal;
@@ -128,7 +148,7 @@ public class Partidos {
             this.estado = estado;
             this.estadio = estadio;
             this.fecha = fecha2;
-            this.juez = juez;
+            this.juez = string;
         }
     }
 }
