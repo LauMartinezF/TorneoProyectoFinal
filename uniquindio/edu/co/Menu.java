@@ -30,7 +30,7 @@ public class Menu {
         switch (opcion) {
             
             case 1:
-                Torneo torneo = new Torneo((byte) 0, "", (byte) 0, null, null, 0, null);
+                Torneo torneo = new Torneo((byte) 0, "", (byte) 0, null, null, 0, null, null);
                 torneo.ingresarDatosTorneo();
                 listaTorneos.add(torneo);
                 break;
@@ -67,15 +67,22 @@ public class Menu {
             
                     // Obtener la lista de equipos para simular y establecerla en el torneo
                     List<String> equiposParaSimular = obtenerEquiposParaSimular(torneoSimulacion.getCantMaxEquipos());
+                    List<Juez> listaJueces = new ArrayList<>();
+                    Juez juez1 = new Juez("Jose", "Martinez", "3156980934", "jose.arbrito.com", "Licencia Estandar");
+                    Juez juez2 = new Juez("Edwin", "Lopez", "3105969433", "edwin.arbrito.com", "Licencia Estandar");
+                    Juez juez3 = new Juez("Pedro","Pascal","3114598031","pedro.arbitro.com","Licencia Estandar");
+                    listaJueces.add(juez1);
+                    listaJueces.add(juez2);
+                    listaJueces.add(juez3);
                     torneoSimulacion.setEquipos(equiposParaSimular);
             
                     // Crear un nuevo simulador con la lista de equipos del torneo seleccionado
-                    simulador = new Partidos(equiposParaSimular);
+                    simulador = new Partidos(equiposParaSimular,listaJueces);
             
                     // Simular el torneo
                     simulador.simularTorneo();
             
-                } else {
+                } else {    
                     JOptionPane.showMessageDialog(null, "Índice de torneo no válido.");
                 }
                 break;
