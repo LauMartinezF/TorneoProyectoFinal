@@ -36,6 +36,13 @@ public class Jugador extends Persona {
         this.fechaNacimiento = fechaNacimiento;
     }
 
+
+    /**
+     * Permite calcular la edad que tiene un jugador en una fecha dada.
+     */
+    public byte calcularEdad(LocalDate fecha){
+        return (byte) Period.between(fechaNacimiento, fecha).getYears();
+    }
  
 
   //Metodo para validar el genero de la persona es acorde al del torneo 
