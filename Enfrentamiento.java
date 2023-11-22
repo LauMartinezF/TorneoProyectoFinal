@@ -88,12 +88,9 @@ class Enfrentamiento {
         }
     }
 
-    enum EstadoEnfrentamiento {
-    PENDIENTE,
-    EN_JUEGO,
-    FINALIZADO,
-    APLAZADO
-}
+    public int calcularPuntosFinales() {
+        return getPuntosLocal() + getPuntosVisitante();
+    }
 
     @Override
     public String toString() {

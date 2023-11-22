@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -46,9 +47,16 @@ public class Partidos {
         for (Enfrentamiento enfrentamiento : enfrentamientos) {
             mensaje += enfrentamiento.toString() + "\n";
             enfrentamiento.simular();
+            
+            // Imprime el resultado del enfrentamiento para verificar
+            System.out.println(enfrentamiento.getResultado());
+
+            // Añade una línea en blanco para separar los resultados
+            System.out.println();
         }
         JOptionPane.showMessageDialog(null, mensaje);
     }
+
 
     private void actualizarTablaPosiciones() {
         for (Enfrentamiento enfrentamiento : enfrentamientos) {
@@ -56,20 +64,32 @@ public class Partidos {
             String equipoVisitante = enfrentamiento.getEquipoVisitante();
             int puntosLocal = enfrentamiento.getPuntosLocal();
             int puntosVisitante = enfrentamiento.getPuntosVisitante();
-
+    
+            // Llamada al método con los argumentos correctos
             tablaPosiciones.actualizarPuntuacion(equipoLocal, puntosLocal);
             tablaPosiciones.actualizarPuntuacion(equipoVisitante, puntosVisitante);
         }
     }
 
-    private void imprimirResultadosFinales() {
-        // Ordenar los enfrentamientos por fecha y hora
-        Collections.sort(enfrentamientos, (a, b) -> a.getFechaHora().compareTo(b.getFechaHora()));
+    
 
+    private void imprimirResultadosFinales() {
+        // Mostrar puntos antes de la ordenación
+        JOptionPane.showMessageDialog(null, "Puntos antes de la ordenación: " + enfrentamientos);
+    
+        // Ordenar los enfrentamientos por puntos finales de manera descendente usando un Comparator
+        Collections.sort(enfrentamientos, Comparator.comparingInt(Enfrentamiento::calcularPuntosFinales).reversed());
+    
+        // Mostrar puntos después de la ordenación
+        JOptionPane.showMessageDialog(null, "Puntos después de la ordenación: " + enfrentamientos);
+    
+        // Crear el mensaje con los resultados finales
         String mensaje = "\nResultados Finales del Torneo\n";
         for (Enfrentamiento enfrentamiento : enfrentamientos) {
             mensaje += enfrentamiento.getResultado() + "\n";
         }
+    
+        // Mostrar el mensaje en un cuadro de diálogo
         JOptionPane.showMessageDialog(null, mensaje);
     }
 

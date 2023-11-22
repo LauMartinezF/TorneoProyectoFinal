@@ -4,16 +4,24 @@ import java.util.List;
 class TablaPosiciones {
     private List<String> equipos;
     private List<Integer> puntosPorEquipo;
+     private List<Integer> partidosGanados;
+    private List<Integer> partidosPerdidos;
+    private List<Integer> partidosEmpatados;
 
     public TablaPosiciones(List<String> equipos) {
         this.equipos = equipos;
         this.puntosPorEquipo = new ArrayList<>();
+        this.partidosGanados = new ArrayList<>();
+        this.partidosPerdidos = new ArrayList<>();
+        this.partidosEmpatados = new ArrayList<>();
 
         for (int i = 0; i < equipos.size(); i++) {
             this.puntosPorEquipo.add(0);
+            this.partidosGanados.add(0);
+            this.partidosPerdidos.add(0);
+            this.partidosEmpatados.add(0);
         }
     }
-
 
     public List<String> getEquipos() {
         return equipos;
@@ -46,9 +54,11 @@ class TablaPosiciones {
     @Override
     public String toString() {
         StringBuilder tabla = new StringBuilder();
-        tabla.append(String.format("%-20s %-10s\n", "Equipo", "Puntos"));
+        tabla.append(String.format("%-20s %-10s %-10s %-10s %-10s\n", "Equipo", "Puntos", "Ganados", "Perdidos", "Empatados"));
         for (int i = 0; i < equipos.size(); i++) {
-            tabla.append(String.format("%-20s %-10d\n", equipos.get(i), puntosPorEquipo.get(i)));
+            tabla.append(String.format("%-20s %-10d %-10d %-10d %-10d\n",
+                    equipos.get(i), puntosPorEquipo.get(i),
+                    partidosGanados.get(i), partidosPerdidos.get(i), partidosEmpatados.get(i)));
         }
         return tabla.toString();
     }
