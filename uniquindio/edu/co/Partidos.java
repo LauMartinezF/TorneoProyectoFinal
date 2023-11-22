@@ -132,8 +132,3 @@ public class Partidos {
         }
     }
 }
-    
-
-    
-
-    
