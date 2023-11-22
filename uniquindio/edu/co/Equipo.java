@@ -1,15 +1,13 @@
 package uniquindio.edu.co;
 
 import java.util.ArrayList;
-import java.util.Optional;
-import java.util.function.Predicate;
 
 public class Equipo {
 
     private final String nombreEquipo;
     private final Persona representante;
     private ArrayList<Jugador> jugadores;
-    private ArrayList<Enfrentamiento> enfrentamientosEquipo;
+    private ArrayList<Partidos> enfrentamientosEquipo;
 
     public Equipo (String nombreEquipo, Persona representante){
         this.nombreEquipo = nombreEquipo;
@@ -29,11 +27,11 @@ public class Equipo {
     //primero verifica mediante un foreach si el equipo esta en cada uno de los enfrentamientos de la lista
     //si el equipo esta en el enfrentamiento, ya sea en el equipo 1 o en el equipo 2,
     //se añadira a la lista de enfrentamientos de dicho equipo 
-    public void enfrentamientosPorEquipo(ArrayList<Enfrentamiento> enfrentamientos) {
+    public void enfrentamientosPorEquipo(ArrayList<Partidos> enfrentamientos) {
         for (int i = 0; i < enfrentamientos.size(); i++) {
-            Enfrentamiento enfrentamiento = enfrentamientos.get(i);
+           Partidos enfrentamiento = enfrentamientos.get(i);
             if (enfrentamiento.getEquipo1().getNombreEquipo().equals(this.nombreEquipo) ||
-                enfrentamiento.getEquipo2().getNombreEquipo().equals(this.nombreEquipo)) {
+             enfrentamiento.getEquipo1().getNombreEquipo().equals(this.nombreEquipo)) {
                 this.enfrentamientosEquipo.add(enfrentamiento);
             }
         }
@@ -45,7 +43,8 @@ public class Equipo {
     }
 
     private void validarJugadorExistente(Jugador jugador) {
-        boolean existeJugador = buscarJugador(jugador).isPresent();
+        Jugador jugadorEncontrado = buscarJugador(jugador);
+        boolean existeJugador = jugadorEncontrado != null;
         assert !existeJugador : "El jugador ya esta registrado";
     }
 
@@ -71,7 +70,7 @@ public class Equipo {
         return jugadores;
     }
 
-    public ArrayList<Enfrentamiento> getEnfrentamientosEquipo() {
+    public ArrayList<Partidos> getEnfrentamientosEquipo() {
         return enfrentamientosEquipo;
     }
 

@@ -1,9 +1,13 @@
+package uniquindio.edu;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+
+import uniquindio.edu.co.Partidos;
+import uniquindio.edu.co.Torneo;
 
 public class Menu {
     public static void main(String[] args) {
